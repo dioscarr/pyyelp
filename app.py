@@ -1,18 +1,17 @@
-
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import unquote
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
+import time
 app = Flask(__name__)
+
 @app.route('/')  
 def hello():
     url = request.args.get('url')
     if url:
         url = unquote(url)    
-    
     print(url)
-    # url = 'https://www.yelp.com/biz/the-swanson-perry?adjust_creative=ZtipivwuIGdHJE7C3EO4pg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ZtipivwuIGdHJE7C3EO4pg'
     response = requests.get(str(url))
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -21,5 +20,15 @@ def hello():
             print(a['href'])
             return a['href']
     return "N/A"
+    
+@app.route('/performance')
+def check_performance():
+    website = request.args.get('url')    
+    start_time = time.time()
+    response = requests.get(str(website))
+    end_time = time.time()
+    total_time = end_time - start_time
+    return jsonify({"website": website, "response_time": total_time})
+
 if __name__ == '__main__':
     app.run(debug=True)
