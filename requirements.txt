@@ -4,6 +4,5 @@ requests
 beautifulsoup4
 urllib3
 validate_email
-re
 time
 flask_cors
