@@ -20,10 +20,16 @@ def hello():
     response = requests.get(str(url))
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    for a in soup.find_all('a', href=True):
-        if a.get_text().startswith('http'):
-            print(a['href'])
-            return a['href']
+    for span in soup.find_all('span'):
+        if 'icon--24-external-link-v2' in span['class']:
+            parent = span.find_parent('a', href=True)
+            if parent:
+                print(parent['href'])
+                return parent['href']
+    # for a in soup.find_all('a', href=True):
+    #     if a.get_text().startswith('http'):
+    #         print(a['href'])
+    #         return a['href']
     return "N/A"
     
 @app.route('/performance' , methods=['GET'])
