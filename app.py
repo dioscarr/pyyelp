@@ -16,26 +16,15 @@ def hello():
     url = request.args.get('url')
     if url:
         url = unquote(url)    
-    print(url)
+        print(url)
     response = requests.get(str(url))
     soup = BeautifulSoup(response.text, 'html.parser')
 
     for span in soup.find_all('span',attrs={"class":"icon--24-external-link-v2" }):
-        #if 'icon--24-external-link-v2' in span['class']:
-            parent = span.find_parent('a', href=True)
-            if parent:
-                print(parent['href'])
-                return parent['href']
-    # for span in soup.find_all('span'):
-    #     if 'icon--24-external-link-v2' in span['class']:
-    #         parent = span.find_parent('a', href=True)
-    #         if parent:
-    #             print(parent['href'])
-    #             return parent['href']
-    # for a in soup.find_all('a', href=True):
-    #     if a.get_text().startswith('http'):
-    #         print(a['href'])
-    #         return a['href']
+        parent = span.find_parent('a', href=True)
+        if parent:
+            print(parent['href'])
+            return parent['href']
     return "N/A"
     
 @app.route('/performance' , methods=['GET'])
