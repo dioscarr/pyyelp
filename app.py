@@ -22,8 +22,7 @@ def hello():
 
     for span in soup.find_all('span',attrs={"class":"icon--24-external-link-v2" }):
         parent = span.find_parent('a', href=True)
-        if parent:
-            print(parent['href'])
+        if parent:           
             return parent['href']
     return "N/A"
     
