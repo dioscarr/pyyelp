@@ -73,7 +73,14 @@ def create_map():
                         return jsonify({"url":start_url,"emails":list(email_addresses)}) 
         except Exception as e:
             email_addresses.add("N/A")
-            return jsonify({"url":start_url,"emails":list(email_addresses)})       
+            return jsonify({"url":start_url,"emails":list(email_addresses)})  
+        
+        if retry_count is 3:
+            email_addresses.add("N/A")
+            return jsonify({"url":start_url,"emails":list(email_addresses)})  
+        else: 
+            retry_count = retry_count + 1           
+            
     email_addresses.add("N/A")        
     return jsonify({"url":start_url,"emails":list(email_addresses)})    
 if __name__ == '__main__':
