@@ -15,16 +15,19 @@ CORS(app)
 def hello():
     url = request.args.get('url')
     if url:
-        url = unquote(url)    
-        print(url)
-    response = requests.get(str(url))
-    soup = BeautifulSoup(response.text, 'html.parser')
+        url = unquote(url)
+    try:
+        response = requests.get(str(url))
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-    for span in soup.find_all('span',attrs={"class":"icon--24-external-link-v2" }):
-        parent = span.find_parent('a', href=True)
-        if parent:           
-            return parent['href']
-    return "N/A"
+        for span in soup.find_all('span',attrs={"class":"icon--24-external-link-v2" }):
+            parent = span.find_parent('a', href=True)
+            if parent:           
+                return parent['href']
+    except Exception as e:
+        return "Exception"
+    return "Exception"
+    
     
 @app.route('/performance' , methods=['GET'])
 def check_performance():
